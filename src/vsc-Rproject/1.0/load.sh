@@ -19,6 +19,7 @@
 VSC_RPROJECT_VERSION="1.0.0"
 __vscrproject__default_r=$(module --redirect --default --terse avail | grep -E '^R/')
 
+
 # ================ #
 # vsc Rproject CLI #
 # ================ #
@@ -41,7 +42,6 @@ vsc-rproject() {
   # Text Make-Up #
   # ============ #
 
-
   local RESET='\033[0m'
   local RED='\033[0;31m'
   local YELLOW='\033[0;33m'
@@ -55,6 +55,26 @@ vsc-rproject() {
   # ================ #
   # Helper Functions #
   # ================ #
+
+  is_quiet(){
+    [[ "$quiet" == "true" ]]
+  }
+
+  echo_info() {
+    is_quiet || echo -e "${GREEN}[INFO] $1${RESET}"
+  }
+
+  echo_warning() {
+    is_quiet || echo -e "${YELLOW}[WARNING] $1${RESET}"
+  }
+
+  echo_error() {
+    echo -e "${RED}[ERROR] $1${RESET}"
+  }
+
+  echo_cmd() {
+    echo -e "${BLUE}[>CMD] $ ${BRIGHT_BLUE}$1${RESET}"
+  }
 
   usage() {
     cat <<-EOF
@@ -81,7 +101,6 @@ vsc-rproject() {
 EOF
   }
 
-
   show_default_settings() {
     cat <<-EOF
 
@@ -93,7 +112,6 @@ EOF
 
 EOF
   }
-
 
   load_defaults() {
     local configs="${VSC_RPROJECT_CONFIG:-${VSC_HOME}/.vsc-rproject-config}"
@@ -114,35 +132,10 @@ EOF
     printf 'default_march=%q\n' "${default_march}"
   }
 
-
-  is_quiet(){
-    [[ "$quiet" == "true" ]]
-  }
-
-
-  echo_info() {
-    is_quiet || echo -e "${GREEN}[INFO] $1${RESET}"
-  }
-
-
-  echo_warning() {
-    is_quiet || echo -e "${YELLOW}[WARNING] $1${RESET}" 
-  }
-
-
-  echo_error() {
-    echo -e "${RED}[ERROR] $1${RESET}"
-  }
-
-  echo_cmd() {
-    echo -e "${BLUE}[>CMD] $ ${BRIGHT_BLUE}$1${RESET}"
-  }
-
   get_nloaded_modules() {
     local loaded_modules=($(echo "$LOADEDMODULES" | tr ':' '\n' | grep -v -E '^(cluster|vsc-Rproject)/')) # Remove cluster and vsc-Rproject modules
     echo "${#loaded_modules[@]}"
   }
-
 
   load_modules() {
     local lines
@@ -163,7 +156,6 @@ EOF
     done
   }
 
-
   module_purge_vsc_rproject() {
     local vsc_rproject_module=$(echo "${LOADEDMODULES}" | tr ':' '\n' | grep "^vsc-Rproject/")
     module purge >/dev/null 2>&1
@@ -171,7 +163,6 @@ EOF
         module load ${vsc_rproject_module}
     fi
   }
-
 
   module_exists(){
     local module_name="${1}"
@@ -186,7 +177,6 @@ EOF
     return 1
   }
 
-
   check_project_name() {
     local name="${1}"
     if [[ -z ${name} ]]; then
@@ -198,7 +188,6 @@ EOF
       return 1
     fi
   }
-
 
   check_project_location() {
     local location="${1}"
@@ -233,13 +222,11 @@ EOF
     return 1
   }
 
-
   detect() {
     if ! is_vsc_rproject ${VSC_RPROJECT} ; then
       return 1
     fi
   }
-
 
   activate() {
     echo_info "Loading modules from '${project_root}/.vsc-rproject/modules.env'"
@@ -254,7 +241,6 @@ EOF
     echo_cmd "cd \$VSC_RPROJECT"
     echo_cmd "Rscript myscript.R"
   }
-
 
   deactivate() {
     local project_name
@@ -741,7 +727,7 @@ EOF
 
   subcmd_configure() {
 
-    local configs="${VSC_HOME}/.vsc-rproject-config"
+    local configs="${VSC_RPROJECT_CONFIG:-${VSC_HOME}/.vsc-rproject-config}"
     usage_configure() {
       cat <<-EOF
 
@@ -769,6 +755,7 @@ EOF
       # If key exists, replace its value
       if grep -qE "^${escaped_key}=" "${configs}"; then
         sed -i.bak -E "s|^${escaped_key}=.*|${key}=\"${value}\"|" "${configs}"
+        rm -f "${configs}.bak"
       else
         echo "${key}=\"${value}\"" >> "${configs}"
       fi
@@ -885,9 +872,14 @@ EOF
   local default_cran
   local default_march
 
-  eval $(load_defaults)
-
   # --- setting defaults --- #
+  if [[ -n $VSC_RPROJECT_CONFIG && ! -f $VSC_RPROJECT_CONFIG ]]; then
+    echo_error "$VSC_RPROJECT_CONFIG is not a file"
+    return 1
+  else
+    eval $(load_defaults) 
+  fi
+
   local quiet=false
   local r_module="${default_r_module}"
   local project_location="${default_project_location}"
