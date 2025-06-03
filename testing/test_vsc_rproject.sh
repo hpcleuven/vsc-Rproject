@@ -55,10 +55,10 @@ setup() {
   BAD_MODULES_FILE="$TEST_DIR/.bad_modules.txt"
   echo "JAGS/4.3.2-foss-2023b" > "$BAD_MODULES_FILE" # no R module in the modules file
 
-  VSC_RPROJECTS_CONFIG="${VSC_HOME}/.vsc_rproject_config"
+  VSC_RPROJECTS_CONFIG="${VSC_HOME}/.vsc-rproject-config"
   if [[ -f "${VSC_RPROJECTS_CONFIG}" ]]; then
-    echo "storing user .vsc_rproject_config file..."
-    USER_CONFIG="${VSC_HOME}/.vsc_rproject_config_user"
+    echo "storing user .vsc-rproject-config file..."
+    USER_CONFIG="${VSC_HOME}/.vsc-rproject-config-user"
     mv "${VSC_RPROJECTS_CONFIG}" "${USER_CONFIG}"
   fi
 
@@ -82,7 +82,7 @@ cleanup() {
   rm -rf "${TEST_DIR}"
 
   if [[ -f "${USER_CONFIG}" ]]; then
-    echo "restoring user .vsc_rproject_config file..."
+    echo "restoring user .vsc-rproject-config file..."
     mv "${USER_CONFIG}" "${VSC_RPROJECTS_CONFIG}"
   fi
 
@@ -176,185 +176,185 @@ run_test() {
 }
 
 # ========================= #
-# vsc_rproject main - tests #
+# vsc-rproject main - tests #
 # ========================= #
 main_tests() {
   write_log ""
   write_log "# ========================= #"
-  write_log "# vsc_rproject main - tests #"
+  write_log "# vsc-rproject main - tests #"
   write_log "# ========================= #"
   write_log ""
 
   # --- positive tests --- #
-  run_test -n "vsc-Rproject help" -c "vsc_rproject --help" 
-  run_test -n "vsc-Rproject version" -c "vsc_rproject --version" -o "${VERSION}"
-  run_test -n "vsc-Rproject defaults" -c "vsc_rproject --defaults"
-  run_test -n "- check: R" -c "vsc_rproject --defaults" -o "${DEFAULT_R_MODULE}"
-  run_test -n "- check: location" -c "vsc_rproject --defaults" -o "${TRUE_DEFAULT_LOCATION}"
-  run_test -n "- check: CRAN" -c "vsc_rproject --defaults" -o "${DEFAULT_CRAN}"
-  run_test -n "- check: march" -c "vsc_rproject --defaults" -o "${DEFAULT_MARCH}"
+  run_test -n "vsc-Rproject help" -c "vsc-rproject --help" 
+  run_test -n "vsc-Rproject version" -c "vsc-rproject --version" -o "${VERSION}"
+  run_test -n "vsc-Rproject defaults" -c "vsc-rproject --defaults"
+  run_test -n "- check: R" -c "vsc-rproject --defaults" -o "${DEFAULT_R_MODULE}"
+  run_test -n "- check: location" -c "vsc-rproject --defaults" -o "${TRUE_DEFAULT_LOCATION}"
+  run_test -n "- check: CRAN" -c "vsc-rproject --defaults" -o "${DEFAULT_CRAN}"
+  run_test -n "- check: march" -c "vsc-rproject --defaults" -o "${DEFAULT_MARCH}"
 
   # --- negative tests --- #
-  run_test -n "vsc-Rproject unknown subcommand" -c "vsc_rproject bad_command" -s 1 -o "Unknown command: bad_command"
+  run_test -n "vsc-Rproject unknown subcommand" -c "vsc-rproject bad_command" -s 1 -o "Unknown command: bad_command"
 }
 
 # ============================== #
-# vsc_rproject configure - tests #
+# vsc-rproject configure - tests #
 # ============================== #
 configure_tests() {
   write_log ""
   write_log "# ============================== #"
-  write_log "# vsc_rproject configure - tests #"
+  write_log "# vsc-rproject configure - tests #"
   write_log "# ============================== #"
   write_log ""
 
   # --- positive tests --- #
-  # vsc_rproject configure --help
-  run_test -n "Configure help" -c "vsc_rproject configure --help"
+  # vsc-rproject configure --help
+  run_test -n "Configure help" -c "vsc-rproject configure --help"
 
   # configuring default settings
-  run_test -n "Configure default with existing R" -c 'vsc_rproject configure -R ${R_MODULE}' -o "Set default_r_module to: ${R_MODULE}"
-  run_test -n "Configure default location with /good/path" -c 'vsc_rproject configure -l "${LOCATION}"' -o "Set default_project_location to: ${TRUE_LOCATION}"
-  run_test -n "Configure default CRAN" -c 'vsc_rproject configure -c ${CRAN}' -o "Set default_cran to: ${CRAN}"
-  run_test -n "Configure default march" -c 'vsc_rproject configure -M ${MARCH}' -o "Set default_march to: ${MARCH}"
+  run_test -n "Configure default with existing R" -c 'vsc-rproject configure -R ${R_MODULE}' -o "Set default_r_module to: ${R_MODULE}"
+  run_test -n "Configure default location with /good/path" -c 'vsc-rproject configure -l "${LOCATION}"' -o "Set default_project_location to: ${TRUE_LOCATION}"
+  run_test -n "Configure default CRAN" -c 'vsc-rproject configure -c ${CRAN}' -o "Set default_cran to: ${CRAN}"
+  run_test -n "Configure default march" -c 'vsc-rproject configure -M ${MARCH}' -o "Set default_march to: ${MARCH}"
 
-  # check if new defaults are shown with vsc_rproject --defaults
-  run_test -n "vsc-Rproject updated defaults" -c "vsc_rproject --defaults"
-  run_test -n "- check: updated R" -c 'vsc_rproject --defaults' -o "${R_MODULE}"
-  run_test -n "- check: updated location" -c 'vsc_rproject --defaults' -o "${TRUE_LOCATION}"
-  run_test -n "- check: updated CRAN" -c 'vsc_rproject --defaults' -o "${CRAN}"
-  run_test -n "- check: updated march" -c 'vsc_rproject --defaults' -o "${MARCH}"
+  # check if new defaults are shown with vsc-rproject --defaults
+  run_test -n "vsc-Rproject updated defaults" -c "vsc-rproject --defaults"
+  run_test -n "- check: updated R" -c 'vsc-rproject --defaults' -o "${R_MODULE}"
+  run_test -n "- check: updated location" -c 'vsc-rproject --defaults' -o "${TRUE_LOCATION}"
+  run_test -n "- check: updated CRAN" -c 'vsc-rproject --defaults' -o "${CRAN}"
+  run_test -n "- check: updated march" -c 'vsc-rproject --defaults' -o "${MARCH}"
 
   # resetting defaults
-  run_test -n "Configure reset defaults" -c 'vsc_rproject configure --reset <<< "yes"' -o "vsc-Rproject settings have been reset"
+  run_test -n "Configure reset defaults" -c 'vsc-rproject configure --reset <<< "yes"' -o "vsc-Rproject settings have been reset"
   run_test -n "- check: config file removed" -c '[[ -f "${VSC_RPROJECTS_CONFIG}" ]]' -s 1
 
-  run_test -n "Configure reset | already default settings" -c 'vsc_rproject configure -r <<< "yes"' -o "vsc-Rproject settings already at default"
+  run_test -n "Configure reset | already default settings" -c 'vsc-rproject configure -r <<< "yes"' -o "vsc-Rproject settings already at default"
 
   # --- negative tests --- #
-  run_test -n "Configure default with non-existing R" -c 'vsc_rproject configure -R ${BAD_R_MODULE}' -s 1 -o "${BAD_R_MODULE} not found."
-  run_test -n "configure default location with /bad path" -c 'vsc_rproject configure -l "${VSC_SCRATCH}/bad path"' -s 1 -o "Only these characters are accepted: a-z, A-Z, 0-9, /, _, -, and ."
+  run_test -n "Configure default with non-existing R" -c 'vsc-rproject configure -R ${BAD_R_MODULE}' -s 1 -o "${BAD_R_MODULE} not found."
+  run_test -n "configure default location with /bad path" -c 'vsc-rproject configure -l "${VSC_SCRATCH}/bad path"' -s 1 -o "Only these characters are accepted: a-z, A-Z, 0-9, /, _, -, and ."
 }
 
 # =========================== #
-# vsc_rproject create - tests #
+# vsc-rproject create - tests #
 # =========================== #
 create_tests() {
   write_log ""
   write_log "# =========================== #"
-  write_log "# vsc_rproject create - tests #"
+  write_log "# vsc-rproject create - tests #"
   write_log "# =========================== #"
   write_log ""
 
   # --- positive tests --- #
-  # vsc_rproject create --help 
-  run_test -n "Create help" -c "vsc_rproject create --help"
-  run_test -n "- check: default R" -c "vsc_rproject create --help" -o "${DEFAULT_R_MODULE}"
-  run_test -n "- check: default location" -c "vsc_rproject create --help" -o "${TRUE_DEFAULT_LOCATION}"
-  run_test -n "- check: default CRAN" -c "vsc_rproject create --help" -o "${DEFAULT_CRAN}"
-  run_test -n "- check: default march" -c "vsc_rproject create --help" -o "${DEFAULT_MARCH}"
-  run_test -n "Create help - additional arg" -c 'vsc_rproject create --location=${LOCATION} --help' -o "${TRUE_DEFAULT_LOCATION}"
+  # vsc-rproject create --help 
+  run_test -n "Create help" -c "vsc-rproject create --help"
+  run_test -n "- check: default R" -c "vsc-rproject create --help" -o "${DEFAULT_R_MODULE}"
+  run_test -n "- check: default location" -c "vsc-rproject create --help" -o "${TRUE_DEFAULT_LOCATION}"
+  run_test -n "- check: default CRAN" -c "vsc-rproject create --help" -o "${DEFAULT_CRAN}"
+  run_test -n "- check: default march" -c "vsc-rproject create --help" -o "${DEFAULT_MARCH}"
+  run_test -n "Create help - additional arg" -c 'vsc-rproject create --location=${LOCATION} --help' -o "${TRUE_DEFAULT_LOCATION}"
 
   # creating a vsc-Rproject
-  run_test -n "Create project" -c 'vsc_rproject create "${NAME1}" -l "${LOCATION}"' -o "vsc-Rproject environment setup complete"
+  run_test -n "Create project" -c 'vsc-rproject create "${NAME1}" -l "${LOCATION}"' -o "vsc-Rproject environment setup complete"
   run_test -n "- check: project_root exists" -c '[[ -d "${LOCATION}/${NAME1}" ]]' 
   run_test -n "- check: Rlibrary exists" -c '[[ -d "${LOCATION}/${NAME1}/library/${VSC_OS_LOCAL}/R" ]]'
   run_test -n "- check: .Rprofile content" -c 'cat "${LOCATION}/${NAME1}/.Rprofile"' -o "options(repos = c(CRAN = \"${DEFAULT_CRAN}\"))"
   run_test -n "- check: .Renviron content" -c 'cat "${LOCATION}/${NAME1}/.Renviron"' -o "R_LIBS_USER=\"${TRUE_LOCATION}/${NAME1}/library/\${VSC_OS_LOCAL}/R\""
   run_test -n "- check: Makevars content" -c 'cat "${LOCATION}/${NAME1}/.R/Makevars"' -o "${DEFAULT_MARCH}"
-  run_test -n "- check: modules.env content" -c 'cat "${LOCATION}/${NAME1}/.vsc_rproject/modules.env"' -o "${DEFAULT_R_MODULE}"
+  run_test -n "- check: modules.env content" -c 'cat "${LOCATION}/${NAME1}/.vsc-rproject/modules.env"' -o "${DEFAULT_R_MODULE}"
 
-  run_test -n "Overwrite existing project | no" -c 'vsc_rproject create "${NAME1}" -l "${LOCATION}" <<< no' -s 1 -o "Aborted by user. No changes made."
-  run_test -n "Overwrite existing project | yes" -c 'vsc_rproject create "${NAME1}" -l "${LOCATION}" <<< yes' -o "vsc-Rproject environment setup complete"
+  run_test -n "Overwrite existing project | no" -c 'vsc-rproject create "${NAME1}" -l "${LOCATION}" <<< no' -s 1 -o "Aborted by user. No changes made."
+  run_test -n "Overwrite existing project | yes" -c 'vsc-rproject create "${NAME1}" -l "${LOCATION}" <<< yes' -o "vsc-Rproject environment setup complete"
 
   # update defaults and test project creation with new default settings
-  vsc_rproject configure -R "${R_MODULE}" --location "${LOCATION}" --cran="${CRAN}" -M "skylake" >> "${TEST_LOG}"
+  vsc-rproject configure -R "${R_MODULE}" --location "${LOCATION}" --cran="${CRAN}" -M "skylake" >> "${TEST_LOG}"
 
-  # vsc_rproject create --help with new defaults
-  run_test -n "Create help - updated defaults" -c "vsc_rproject create --help"
-  run_test -n "- check: updated R" -c "vsc_rproject create --help" -o "${R_MODULE}"
-  run_test -n "- check: updated location" -c "vsc_rproject create --help" -o "${TRUE_LOCATION}"
-  run_test -n "- check: updated CRAN" -c "vsc_rproject create --help" -o "${CRAN}"
-  run_test -n "- check: updated march" -c "vsc_rproject create --help" -o "${MARCH}"
+  # vsc-rproject create --help with new defaults
+  run_test -n "Create help - updated defaults" -c "vsc-rproject create --help"
+  run_test -n "- check: updated R" -c "vsc-rproject create --help" -o "${R_MODULE}"
+  run_test -n "- check: updated location" -c "vsc-rproject create --help" -o "${TRUE_LOCATION}"
+  run_test -n "- check: updated CRAN" -c "vsc-rproject create --help" -o "${CRAN}"
+  run_test -n "- check: updated march" -c "vsc-rproject create --help" -o "${MARCH}"
 
   # creating a vsc-Rproject with new defaults
-  run_test -n "Create project_1 with new default settings" -c 'vsc_rproject create "${NAME1}" <<< "yes"' -o "vsc-Rproject environment setup complete"
+  run_test -n "Create project_1 with new default settings" -c 'vsc-rproject create "${NAME1}" <<< "yes"' -o "vsc-Rproject environment setup complete"
   run_test -n "- check: updated project_root" -c '[[ -d "${LOCATION}/${NAME1}" ]]'
   run_test -n "- check: updated .Rprofile" -c 'cat "${LOCATION}/${NAME1}/.Rprofile"' -o "options(repos = c(CRAN = \"${CRAN}\"))"
   run_test -n "- check: updated Makevars" -c 'cat "${LOCATION}/${NAME1}/.R/Makevars"' -o "${MARCH}"
-  run_test -n "- check: updated modules.env" -c 'cat "${LOCATION}/${NAME1}/.vsc_rproject/modules.env"' -o "${R_MODULE}"
+  run_test -n "- check: updated modules.env" -c 'cat "${LOCATION}/${NAME1}/.vsc-rproject/modules.env"' -o "${R_MODULE}"
 
   # creating a vsc-Rproject with --enable-git
-  run_test -n "Create project_1 with --enable-git" -c 'vsc_rproject create "${NAME1}" --enable-git <<< "yes"' -o "Git initialized and first commit created."
+  run_test -n "Create project_1 with --enable-git" -c 'vsc-rproject create "${NAME1}" --enable-git <<< "yes"' -o "Git initialized and first commit created."
 
   # reset vsc-Rproject settings
-  vsc_rproject configure --reset <<< "yes" >> "${TEST_LOG}"
+  vsc-rproject configure --reset <<< "yes" >> "${TEST_LOG}"
 
   # creating a vsc-Rproject with modules.txt file
-  run_test -n "Create project_2 with good_modules_file" -c 'vsc_rproject create ${NAME2} -l ${LOCATION} -m ${GOOD_MODULES_FILE}' -o "Modules loaded successfully"
-  run_test -n "- check: updated modules.env" -c 'cat "${LOCATION}/${NAME1}/.vsc_rproject/modules.env"' -o "${R_MODULE}"
+  run_test -n "Create project_2 with good_modules_file" -c 'vsc-rproject create ${NAME2} -l ${LOCATION} -m ${GOOD_MODULES_FILE}' -o "Modules loaded successfully"
+  run_test -n "- check: updated modules.env" -c 'cat "${LOCATION}/${NAME1}/.vsc-rproject/modules.env"' -o "${R_MODULE}"
 
   # --- negative tests --- #
-  run_test -n "Create project with bad name" -c 'vsc_rproject create --name="${BAD_NAME}"' -s 1 -o "Invalid name"
-  run_test -n "Create project with double name" -c 'vsc_rproject create "${NAME1}" --name="${NAME1}"' -s 1 -o "Project name can only be set once"
-  run_test -n "Create project with two positional arguments" -c 'vsc_rproject create "${NAME1}" "${NAME1}"' -s 1 -o "Only one positional argument (project name) is allowed."
-  run_test -n "Create project without name" -c 'vsc_rproject create' -s 1 -o "Project name must be provided"
-  run_test -n "Create project with bad_modules_file" -c 'vsc_rproject create ${NAME2} -m ${BAD_MODULES_FILE} <<< yes' -s 1 -o "No R module was loaded."
-  run_test -n "Create project with non-existing modules_file" -c 'vsc_rproject create ${NAME2} -l ${LOCATION} -m ${GOOD_MODULES_FILE}_FAKE' -s 1 -o "Modules file not found."
+  run_test -n "Create project with bad name" -c 'vsc-rproject create --name="${BAD_NAME}"' -s 1 -o "Invalid name"
+  run_test -n "Create project with double name" -c 'vsc-rproject create "${NAME1}" --name="${NAME1}"' -s 1 -o "Project name can only be set once"
+  run_test -n "Create project with two positional arguments" -c 'vsc-rproject create "${NAME1}" "${NAME1}"' -s 1 -o "Only one positional argument (project name) is allowed."
+  run_test -n "Create project without name" -c 'vsc-rproject create' -s 1 -o "Project name must be provided"
+  run_test -n "Create project with bad_modules_file" -c 'vsc-rproject create ${NAME2} -m ${BAD_MODULES_FILE} <<< yes' -s 1 -o "No R module was loaded."
+  run_test -n "Create project with non-existing modules_file" -c 'vsc-rproject create ${NAME2} -l ${LOCATION} -m ${GOOD_MODULES_FILE}_FAKE' -s 1 -o "Modules file not found."
 }
 
 # ============================= #
-# vsc_rproject activate - tests #
+# vsc-rproject activate - tests #
 # ============================= #
 activate_tests() {
   write_log ""
   write_log "# ============================= #"
-  write_log "# vsc_rproject activate - tests #"
+  write_log "# vsc-rproject activate - tests #"
   write_log "# ============================= #"
   write_log ""
 
-  vsc_rproject create "${NAME1}" -l "${LOCATION}"  <<< "yes" >> "${TEST_LOG}"
-  vsc_rproject create "${NAME2}" -l "${LOCATION}" -m "${GOOD_MODULES_FILE}" <<< "yes" >> "${TEST_LOG}"
+  vsc-rproject create "${NAME1}" -l "${LOCATION}"  <<< "yes" >> "${TEST_LOG}"
+  vsc-rproject create "${NAME2}" -l "${LOCATION}" -m "${GOOD_MODULES_FILE}" <<< "yes" >> "${TEST_LOG}"
 
   # --- positive tests --- #
-  # vsc_rproject activate --help
-  run_test -n "Activate help" -c 'vsc_rproject activate --help' -o "${TRUE_DEFAULT_LOCATION}" 
-  run_test -n "Activate help - additional arg" -c 'vsc_rproject activate --location=${LOCATION} --help' -o "${TRUE_DEFAULT_LOCATION}"
+  # vsc-rproject activate --help
+  run_test -n "Activate help" -c 'vsc-rproject activate --help' -o "${TRUE_DEFAULT_LOCATION}" 
+  run_test -n "Activate help - additional arg" -c 'vsc-rproject activate --location=${LOCATION} --help' -o "${TRUE_DEFAULT_LOCATION}"
 
   # activating a vsc-Rproject
   
-  run_test -n "Activate project_1 | default settings" -c 'vsc_rproject activate "${NAME1}" -l "${LOCATION}"' -s 0 -o "${NAME1} activated"
-  run_test -n "- check: \$VSC_RPROJECT" -c 'vsc_rproject activate "${NAME1}" -l "${LOCATION}"; echo $VSC_RPROJECT' -o "${TRUE_LOCATION}/${NAME1}"
-  run_test -n "- check: R module loaded" -c 'vsc_rproject activate "${NAME1}" -l "${LOCATION}"; echo $(module --terse --redirect list)' -o "${DEFAULT_R_MODULE}"
+  run_test -n "Activate project_1 | default settings" -c 'vsc-rproject activate "${NAME1}" -l "${LOCATION}"' -s 0 -o "${NAME1} activated"
+  run_test -n "- check: \$VSC_RPROJECT" -c 'vsc-rproject activate "${NAME1}" -l "${LOCATION}"; echo $VSC_RPROJECT' -o "${TRUE_LOCATION}/${NAME1}"
+  run_test -n "- check: R module loaded" -c 'vsc-rproject activate "${NAME1}" -l "${LOCATION}"; echo $(module --terse --redirect list)' -o "${DEFAULT_R_MODULE}"
 
-  run_test -n "Activate project_2 | modules file" -c 'vsc_rproject activate "${NAME2}" -l ${LOCATION}' -s 0 -o "${NAME2} activated"
-  run_test -n "- check: \$VSC_RPROJECT" -c 'vsc_rproject activate "${NAME2}" -l "${LOCATION}"; echo $VSC_RPROJECT' -o "${TRUE_LOCATION}/${NAME2}"
-  run_test -n "- check: R module loaded" -c 'vsc_rproject activate "${NAME2}" -l "${LOCATION}"; echo $(module --terse --redirect list)' -o "${R_MODULE}"
+  run_test -n "Activate project_2 | modules file" -c 'vsc-rproject activate "${NAME2}" -l ${LOCATION}' -s 0 -o "${NAME2} activated"
+  run_test -n "- check: \$VSC_RPROJECT" -c 'vsc-rproject activate "${NAME2}" -l "${LOCATION}"; echo $VSC_RPROJECT' -o "${TRUE_LOCATION}/${NAME2}"
+  run_test -n "- check: R module loaded" -c 'vsc-rproject activate "${NAME2}" -l "${LOCATION}"; echo $(module --terse --redirect list)' -o "${R_MODULE}"
 
   # --- negative tests --- #
-  run_test -n "Activate project without name" -c 'vsc_rproject activate --location ${LOCATION}' -s 1 -o "Project name must be provided"
-  run_test -n "Activate project with bad name" -c 'vsc_rproject activate --name "${BAD_NAME}" --location "${LOCATION}"' -s 1 -o "Invalid name"
-  run_test -n "Activate non-existing project" -c 'vsc_rproject activate --name="NotAProject" --location="${LOCATION}"' -s 1 -o "is not an RStudio Project"
+  run_test -n "Activate project without name" -c 'vsc-rproject activate --location ${LOCATION}' -s 1 -o "Project name must be provided"
+  run_test -n "Activate project with bad name" -c 'vsc-rproject activate --name "${BAD_NAME}" --location "${LOCATION}"' -s 1 -o "Invalid name"
+  run_test -n "Activate non-existing project" -c 'vsc-rproject activate --name="NotAProject" --location="${LOCATION}"' -s 1 -o "is not an RStudio Project"
 }
 
 # ============================== #
-# vsc_rproject deactivate -tests #
+# vsc-rproject deactivate -tests #
 # ============================== #
 deactivate_tests() {
   write_log ""
   write_log "# =============================== #"
-  write_log "# vsc_rproject deactivate - tests #"
+  write_log "# vsc-rproject deactivate - tests #"
   write_log "# =============================== #"
   write_log ""
 
-  vsc_rproject create "${NAME1}" -l "${LOCATION}"  <<< "yes" >> "${TEST_LOG}"
+  vsc-rproject create "${NAME1}" -l "${LOCATION}"  <<< "yes" >> "${TEST_LOG}"
 
   # --- positive tests --- #
-  run_test -n "Dectivate help" -c 'vsc_rproject deactivate --help'
-  run_test -n "Deactivate project" -c 'vsc_rproject activate ${NAME1} -l ${LOCATION}; vsc_rproject deactivate' -o "has been deactivated"
+  run_test -n "Dectivate help" -c 'vsc-rproject deactivate --help'
+  run_test -n "Deactivate project" -c 'vsc-rproject activate ${NAME1} -l ${LOCATION}; vsc-rproject deactivate' -o "has been deactivated"
 
   # --- negative tests --- #
-  run_test -n "Deactivate project without active project" -c 'vsc_rproject deactivate' -s 1
+  run_test -n "Deactivate project without active project" -c 'vsc-rproject deactivate' -s 1
 }
 
 # =================== #

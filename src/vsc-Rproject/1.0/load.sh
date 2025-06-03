@@ -31,11 +31,11 @@ __vscrproject__completions() {
     COMPREPLY=( $(compgen -W "${subcommands}" -- "$cur") )
   fi
 }
-complete -F __vscrproject__completions vsc_rproject
+complete -F __vscrproject__completions vsc-rproject
 
 
 # main entrypoint
-vsc_rproject() {
+vsc-rproject() {
 
   # ============ #
   # Text Make-Up #
@@ -46,15 +46,12 @@ vsc_rproject() {
   local RED='\033[0;31m'
   local YELLOW='\033[0;33m'
   local GREEN='\033[0;32m'
-  
-  local BRIGHT_RED='\033[1;31m'
-  local BRIGHT_YELLOW='\033[1;33m'
+  local BLUE='\033[0;34m'
+
   local BRIGHT_GREEN='\033[1;32m'
-
+  local BRIGHT_BLUE='\033[1;34m'
 
   
- 
-
   # ================ #
   # Helper Functions #
   # ================ #
@@ -65,7 +62,7 @@ vsc_rproject() {
 	vsc-Rproject is a command-line tool that facilitates the creation and use of
 	RStudio Project-based R environments on top of the existing module system.
 
-	Usage: vsc_rproject COMMAND [OPTIONS]
+	Usage: vsc-rproject COMMAND [OPTIONS]
 
 	Commands:
 	  create            Create a new vsc-Rproject environment.
@@ -79,7 +76,7 @@ vsc_rproject() {
 	  -v | --version    show vsc-Rproject version
 
 	For command-specific help, run:
-	  vsc_rproject COMMAND --help
+	  vsc-rproject COMMAND --help
 
 EOF
   }
@@ -99,7 +96,7 @@ EOF
 
 
   load_defaults() {
-    local configs="${VSC_HOME}/.vsc_rproject_config"
+    local configs="${VSC_RPROJECT_CONFIG:-${VSC_HOME}/.vsc-rproject-config}"
 
     # --- Default Settings --- #
     local default_r_module=$__vscrproject__default_r
@@ -137,6 +134,9 @@ EOF
     echo -e "${RED}[ERROR] $1${RESET}"
   }
 
+  echo_cmd() {
+    echo -e "${BLUE}[>CMD] $ ${BRIGHT_BLUE}$1${RESET}"
+  }
 
   get_nloaded_modules() {
     local loaded_modules=($(echo "$LOADEDMODULES" | tr ':' '\n' | grep -v -E '^(cluster|vsc-Rproject)/')) # Remove cluster and vsc-Rproject modules
@@ -224,7 +224,7 @@ EOF
     local path="${1}"
     local rproj_file
     if [ -d "${path}" ]; then
-      vsc_rproject_dir="${path}/.vsc_rproject"
+      vsc_rproject_dir="${path}/.vsc-rproject"
       rproj_file=$(find "${path}" -maxdepth 1 -name "*.Rproj" | head -n 1)
       if [ -n "${rproj_file}" ] && grep -q "^Version: " "${rproj_file}"; then
         return 0
@@ -242,15 +242,17 @@ EOF
 
 
   activate() {
-    echo_info "Loading modules from '${project_root}/.vsc_rproject/modules.env'"
-    if ! load_modules "${project_root}/.vsc_rproject/modules.env"; then # If the modules could not be loaded
-      echo_error "Could not load modules from '${project_root}/.vsc_rproject/modules.env'"
+    echo_info "Loading modules from '${project_root}/.vsc-rproject/modules.env'"
+    if ! load_modules "${project_root}/.vsc-rproject/modules.env"; then # If the modules could not be loaded
+      echo_error "Could not load modules from '${project_root}/.vsc-rproject/modules.env'"
       return 1
     fi
 
     export VSC_RPROJECT=${project_root}
     echo_info "${project_name} activated"
-    echo_info "cd \$VSC_RPROJECT"
+    echo_info "To use this environment, you must go to your vsc-Rproject directory and launch R or call Rscript:"
+    echo_cmd "cd \$VSC_RPROJECT"
+    echo_cmd "Rscript myscript.R"
   }
 
 
@@ -277,23 +279,23 @@ EOF
     usage_create() {
       cat <<-EOF
 
-	Usage: vsc_rproject create [PROJECT_NAME] [OPTIONS]
+	Usage: vsc-rproject create [PROJECT_NAME] [OPTIONS]
 
 	Options:
 	  -n | --name       project name
-	  -m | --modules    modules.txt file                default: ${default_r_module}
-	  -l | --location   project location                default: ${default_project_location}
-	  -c | --cran       prefered CRAN mirror            default: ${default_cran}
-	  -M | --march      target CPU architecture         default: ${default_march}
-	  -g | --enable-git initialize with git             default: false
-	  -a | --activate   activates the new vsc-Rproject  default: false
-	  -q | --quiet      hides info and warning messages default: false
+	  -m | --modules    modules.txt file                    default: ${default_r_module}
+	  -l | --location   project location                    default: ${default_project_location}
+	  -c | --cran       prefered CRAN mirror                default: ${default_cran}
+	  -M | --march      microarchitecture optimization flag default: ${default_march}
+	  -g | --enable-git initialize with git                 default: false
+	  -a | --activate   activates the new vsc-Rproject      default: false
+	  -q | --quiet      hides info and warning messages     default: false
 	  -h | --help       show this help message
 
 	Examples:
-	  vsc_rproject create MyProject -m modules.txt
-	  vsc_rproject create -n MyProject -l \$VSC_DATA/MyRProjects/
-	  vsc_rproject create --name MyProject --enable-git
+	  vsc-rproject create MyProject -m modules.txt
+	  vsc-rproject create -n MyProject -l \$VSC_DATA/MyRProjects/
+	  vsc-rproject create --name MyProject --enable-git
 
 	Note:
 	  The modules.txt file is an optional but recommended file you can use
@@ -469,13 +471,13 @@ EOF
     # --- prepare vsc-Rproject directory --- #
     echo_info "Creating \$VSC_RPROJECT directory"
     mkdir -p "${project_root}/.R"
-    mkdir -p "${project_root}/.vsc_rproject"
+    mkdir -p "${project_root}/.vsc-rproject"
     mkdir -p "${project_root}/${vsc_r_libs_xpnd}"
 
 
     # --- Create modulesenv --- #
     echo_info "Storing modules.env"
-    local project_modules="${project_root}/.vsc_rproject/modules.env"
+    local project_modules="${project_root}/.vsc-rproject/modules.env"
     if [ -n "${modules_file}" ]; then
       cp ${modules_file} ${project_modules}
     else
@@ -594,7 +596,7 @@ EOF
     usage_activate() {
       cat <<-EOF
 
-	Usage: vsc_rproject activate [OPTIONS]
+	Usage: vsc-rproject activate [OPTIONS]
 
 	Options:
 	  -n | --name       project name (required)         no default
@@ -701,7 +703,7 @@ EOF
     usage_deactivate() {
       cat <<-EOF
 
-	Usage: vsc_rproject deactivate
+	Usage: vsc-rproject deactivate
 
 	Options:
 	  -q | --quiet      hides info and warning messages
@@ -739,17 +741,17 @@ EOF
 
   subcmd_configure() {
 
-    local configs="${VSC_HOME}/.vsc_rproject_config"
+    local configs="${VSC_HOME}/.vsc-rproject-config"
     usage_configure() {
       cat <<-EOF
 
-	Usage: vsc_rproject configure [OPTIONS]
+	Usage: vsc-rproject configure [OPTIONS]
 
 	Options:
-	  -R | --default-r  sets default R module
+	  -R | --default-r  sets default R module (e.g. ${__vscrproject__default_r})
 	  -l | --location   sets default project location
 	  -c | --cran       sets default CRAN mirror
-	  -M | --march      sets default --march compiler option
+	  -M | --march      sets default -march compiler option
 	  -r | --reset      resets default config values
 	  -q | --quiet      hides info and warning messages
 	  -h | --help       shows this help message

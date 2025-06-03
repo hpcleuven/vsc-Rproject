@@ -6,10 +6,10 @@
 #
 ###############################################################################
 
-complete -r vsc_rproject
+complete -r vsc-rproject
 
 unset VSC_RPROJECT_VERSION
 unset __vscrproject__default_r
 
-unset -f vsc_rproject
+unset -f vsc-rproject
 unset -f __vscrproject__completions
