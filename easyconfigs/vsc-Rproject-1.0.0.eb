@@ -19,9 +19,7 @@ install_cmd = 'tar -xzf %(builddir)s/vsc-Rproject-%(version)s.tar.gz -C %(buildd
 
 # Copy the scripts from the extracted source to the install location
 postinstallcmds = [
-    'mkdir -p %(installdir)s/libexec',
-    'cp %(builddir)s/vsc-Rproject-%(version)s/libexec %(installdir)s',
-    'cp %(builddir)s/vsc-Rproject-%(version)s/src/unload.sh %(installdir)s/libexec/',
+    'cp -r %(builddir)s/vsc-Rproject-%(version)s/libexec %(installdir)s',
 ]
 
 # Module file
