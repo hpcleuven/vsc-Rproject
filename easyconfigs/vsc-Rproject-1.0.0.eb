@@ -1,7 +1,7 @@
 easyblock = 'Binary'
 
 name = 'vsc-Rproject'
-version = '1.0'
+version = '1.0.0'
 
 homepage = 'https://github.com/hpcleuven/vsc-Rproject/tree/main'
 description = """vsc-Rproject is a command-line tool that facilitates the creation and use of
