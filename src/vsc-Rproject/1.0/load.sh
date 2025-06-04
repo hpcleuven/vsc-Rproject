@@ -104,18 +104,18 @@ EOF
   show_default_settings() {
     cat <<-EOF
 
+	Config file used: ${configs}
+
 	Default settings:
-	  - R module                ${default_r_module}
-	  - Project location        ${default_project_location}
-	  - CRAN mirror             ${default_cran}
-	  - Target CPU Architecture ${default_march}
+	  - R module                       ${default_r_module}
+	  - Project location               ${default_project_location}
+	  - CRAN mirror                    ${default_cran}
+	  - microarchitecture optimization ${default_march}
 
 EOF
   }
 
   load_defaults() {
-    local configs="${VSC_RPROJECT_CONFIG:-${VSC_HOME}/.vsc-rproject-config}"
-
     # --- Default Settings --- #
     local default_r_module=$__vscrproject__default_r
     local default_project_location="$(realpath ${VSC_DATA}/Rprojects)"
@@ -868,6 +868,7 @@ EOF
   # === Sub-Command Dispatcher === #
 
   local subcommand="${1}"
+  local configs
 
   local default_r_module
   local default_project_location
@@ -879,6 +880,7 @@ EOF
     echo_error "$VSC_RPROJECT_CONFIG is not a file"
     return 1
   else
+    configs="${VSC_RPROJECT_CONFIG:-${VSC_HOME}/.vsc-rproject-config}"
     eval $(load_defaults) 
   fi
 
