@@ -227,7 +227,7 @@ configure_tests() {
 
   # resetting defaults
   run_test -n "Configure reset defaults" -c 'vsc-rproject configure --reset <<< "yes"' -o "vsc-Rproject settings have been reset"
-  run_test -n "- check: config file removed" -c '[[ -f "${VSC_RPROJECTS_CONFIG}" ]]' -s 1
+  run_test -n "- check: config file empty" -c '! [[ -s "${VSC_RPROJECTS_CONFIG}" ]]'
 
   run_test -n "Configure reset | already default settings" -c 'vsc-rproject configure -r <<< "yes"' -o "vsc-Rproject settings already at default"
 

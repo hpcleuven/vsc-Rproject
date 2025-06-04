@@ -124,6 +124,8 @@ EOF
 
     if [[ -f "${configs}" ]]; then
       source "${configs}"
+    else
+      touch "${configs}"
     fi
 
     printf 'default_r_module=%q\n' "${default_r_module}"
@@ -764,11 +766,11 @@ EOF
     }
 
     reset_config() {
-      if [[ -f ${configs}  ]]; then 
+      if [[ -s "${configs}" ]]; then 
         read -p "Are you certain you want to reset your vsc-Rproject settings? [y/N]: " response
         case ${response} in
           [yY][eE][sS]|[yY])
-            rm ${configs}
+            > ${configs}
             echo_info "vsc-Rproject settings have been reset"
             return 0
             ;;
