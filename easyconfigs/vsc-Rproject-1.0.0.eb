@@ -12,7 +12,7 @@ toolchain = SYSTEM
 sources = ['vsc-Rproject-%(version)s.tar.gz']
 source_urls = ['https://github.com/hpcleuven/vsc-Rproject/releases/download/v%(version)s']
 
-checksums = ['ebcca7d7b5241a2ec2d9c34678fa63457d04fc8db0740a494d3f9aac03aa4818']
+checksums = ['393c44f3fdd957ae4064544e19bd2e14cbfa80520ca515f9146dfab040634292']
 
 # Extract tarball
 install_cmd = 'tar -xzf %(builddir)s/vsc-Rproject-%(version)s.tar.gz -C %(builddir)s'
@@ -20,8 +20,8 @@ install_cmd = 'tar -xzf %(builddir)s/vsc-Rproject-%(version)s.tar.gz -C %(buildd
 # Copy the scripts from the extracted source to the install location
 postinstallcmds = [
     'mkdir -p %(installdir)s/libexec',
-    'cp %(builddir)s/vsc-Rproject-%(version)s/load.sh %(installdir)s/libexec/',
-    'cp %(builddir)s/vsc-Rproject-%(version)s/unload.sh %(installdir)s/libexec/',
+    'cp %(builddir)s/vsc-Rproject-%(version)s/libexec %(installdir)s',
+    'cp %(builddir)s/vsc-Rproject-%(version)s/src/unload.sh %(installdir)s/libexec/',
 ]
 
 # Module file
