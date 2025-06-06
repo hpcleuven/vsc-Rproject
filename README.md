@@ -49,10 +49,10 @@ You can always extend this script by adding your own test cases.
 
 ## Using vsc-Rproject
 
-Load the `vsc-Rproject/1.0` module
+Load the `vsc-Rproject/1.0.0` module
 
 ```bash
-module load vsc-Rproject/1.0
+module load vsc-Rproject/1.0.0
 ```
 Now you can call `vsc-rproject` and use the subcommands: `create`, `activate`, `deactivate` and `configure`.
 
@@ -74,4 +74,4 @@ If `$VSC_RPROJECT_CONFIG` is not set (default) `vsc-rproject` will use check the
 
 | **Important** |
 |------------------------| 
-| The `-march=x86-64-v4` flag is used as the default for microarchitecture optimization targeting Intel Skylake and newer processors. However, this flag is only supported in GCC version 12 and later. If you are using an older version of `R` that relies on an earlier GCC version, `-march=x86-64-v4` may not be recognized. In such cases, you can run `gcc --target-help` to view the list of supported `-march` values and choose a more appropriate setting. |
+| The `-march=x86-64-v4` flag is used as the default for microarchitecture optimization targeting Intel Skylake and newer processors. However, this flag is only supported in GCC version 11 and later. If you are using an older version of `R` that relies on an earlier GCC version, `-march=x86-64-v4` may not be recognized. In such cases, you can run `gcc --target-help` to view the list of supported `-march` values and choose a more appropriate setting. |
