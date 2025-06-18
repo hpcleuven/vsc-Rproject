@@ -8,5 +8,5 @@ whatis("Version: 1.0.0")
 whatis("Category: tools")
 
 -- module load and unload hooks
-execute{cmd="source " .. "${VSC_DATA}/.local/apps/vsc-Rproject/1.0.0/load.sh", modeA={"load"}}
-execute{cmd="source " .. "${VSC_DATA}/.local/apps/vsc-Rproject/1.0.0/unload.sh", modeA={"unload"}}
+execute{cmd="source " .. "${VSC_DATA}/.local/apps/vsc-Rproject/1.0.0/libexec/load.sh", modeA={"load"}}
+execute{cmd="source " .. "${VSC_DATA}/.local/apps/vsc-Rproject/1.0.0/libexec/unload.sh", modeA={"unload"}}
