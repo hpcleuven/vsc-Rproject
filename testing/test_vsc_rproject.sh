@@ -412,7 +412,7 @@ else
         ;;
       *)
         echo "Unknown test: $1"
-        return 1
+        exit 1
         ;;
     esac
   done
