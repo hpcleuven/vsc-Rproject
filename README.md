@@ -60,7 +60,7 @@ e.g.
 ```bash
 vsc-rproject --help
 vsc-rproject create --help
-vsc-rproject create --modules="modules.txt" --activate
+vsc-rproject create TestProject --activate
 ```
 
 To use `vsc-rproject` within the context of a bash script, the `vsc-Rproject` module has to be loaded inside the script.
