@@ -12,7 +12,7 @@ toolchain = SYSTEM
 sources = ['vsc-Rproject-%(version)s.tar.gz']
 source_urls = ['https://github.com/hpcleuven/vsc-Rproject/releases/download/v%(version)s']
 
-checksums = ['393c44f3fdd957ae4064544e19bd2e14cbfa80520ca515f9146dfab040634292']
+checksums = ['d69f19dd78df2768ce2e3d77ab586c27e343dc50dbde32e0bd74fac977f4188e']
 
 # Extract tarball
 install_cmd = 'tar -xzf %(builddir)s/vsc-Rproject-%(version)s.tar.gz -C %(builddir)s'
@@ -23,7 +23,7 @@ postinstallcmds = [
 ]
 
 # Module file
-modluafooter = """\
+modluafooter = """
 execute{cmd="source " .. root .. "/libexec/load.sh", modeA={"load"}}
 execute{cmd="source " .. root .. "/libexec/unload.sh", modeA={"unload"}}
 """

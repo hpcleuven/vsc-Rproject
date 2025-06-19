@@ -135,7 +135,7 @@ EOF
   }
 
   get_nloaded_modules() {
-    local loaded_modules=($(echo "$LOADEDMODULES" | tr ':' '\n' | grep -v -E '^(cluster|vsc-Rproject)/')) # Remove cluster and vsc-Rproject modules
+    local loaded_modules=($(echo "$LOADEDMODULES" | tr ':' '\n' | grep -v -E '^(env|cluster|vsc-Rproject)/')) # Remove env, cluster and vsc-Rproject modules
     echo "${#loaded_modules[@]}"
   }
 
