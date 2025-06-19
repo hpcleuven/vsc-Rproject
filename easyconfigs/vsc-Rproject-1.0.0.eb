@@ -12,7 +12,7 @@ toolchain = SYSTEM
 sources = ['vsc-Rproject-%(version)s.tar.gz']
 source_urls = ['https://github.com/hpcleuven/vsc-Rproject/releases/download/v%(version)s']
 
-checksums = ['d69f19dd78df2768ce2e3d77ab586c27e343dc50dbde32e0bd74fac977f4188e']
+checksums = ['48254e67f1e1b15518944562a135a3437f30af97b173e7e5af7d749e2ac42f06']
 
 # Extract tarball
 install_cmd = 'tar -xzf %(builddir)s/vsc-Rproject-%(version)s.tar.gz -C %(builddir)s'
