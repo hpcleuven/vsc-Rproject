@@ -674,7 +674,7 @@ EOF
       # --- Warn user if they have modules loaded --- #
       if [ $(get_nloaded_modules) -gt 0 ]; then
         echo_warning "You have $(get_nloaded_modules) loaded modules in the current shell. These modules will be purged."
-        module_purge
+        module_purge_vsc_rproject
       fi
 
       # --- Activate the environment --- #
